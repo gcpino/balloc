@@ -27,7 +27,22 @@ make bench        # runs the benchmark
 make demo         # builds and runs examples/demo
 ```
 
-Tested with `cc` on Linux. Requires POSIX (`posix_memalign`).
+Tested with `cc` on Linux x86_64. Requires POSIX (`posix_memalign`).
+
+## Embedded notes
+
+- Each allocator takes its backing store once, in `_create`, via
+  `posix_memalign`. After that there are no further system allocator calls.
+- `posix_memalign` and the benchmark (which compares against glibc) tie the
+  current code to Linux x86_64. Only Linux x86_64 is tested, and CI covers
+  the same.
+- To run on a target with no libc heap, replace the single `posix_memalign`
+  call in `src/balloc.c` with a static, aligned buffer. The rest of the code
+  does not depend on the OS.
+- No MCU port has been done or tested. The 64-byte buffer alignment is
+  chosen for desktop cache lines; smaller targets can lower it.
+- Single-threaded, no locking. Guard calls with a critical section if used
+  from interrupts.
 
 ## Usage
 
