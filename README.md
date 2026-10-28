@@ -5,12 +5,12 @@ header. No external dependencies. Single-threaded.
 
 ## Strategies
 
-- `ba_arena` — bump allocator. Fastest possible allocation (pointer bump).
+- `ba_arena`: bump allocator. Fastest possible allocation (pointer bump).
   Free all at once with `ba_arena_reset`. Use for scratch memory, per-frame
   state, request lifecycles, AST nodes.
-- `ba_pool` — fixed-size object pool. O(1) alloc and free. Use for known
+- `ba_pool`: fixed-size object pool. O(1) alloc and free. Use for known
   hot-path objects: AST nodes, particles, request structs.
-- `ba_heap` — general-purpose first-fit free list with immediate coalescing
+- `ba_heap`: general-purpose first-fit free list with immediate coalescing
   and splitting. Use when you need real malloc/free semantics inside a
   bounded region.
 
